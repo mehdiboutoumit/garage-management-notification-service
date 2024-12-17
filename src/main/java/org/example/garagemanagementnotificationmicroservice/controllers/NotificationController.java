@@ -1,14 +1,15 @@
 package org.example.garagemanagementnotificationmicroservice.controllers;
 
 
+import org.example.garagemanagementnotificationmicroservice.mailbody.EmailRequest;
 import org.example.garagemanagementnotificationmicroservice.models.Notification;
 import org.example.garagemanagementnotificationmicroservice.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -23,14 +24,16 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
-    @GetMapping("/sendMail")
-    public String sendMail(@RequestParam String to, @RequestParam String subject, @RequestParam String message) {
+    @PostMapping("/sendMail")
+    public String sendMail(@RequestBody EmailRequest emailRequest) {
         try {
-            notificationService.sendNotification((new Notification()));
             SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setTo(to);
-            mailMessage.setSubject(subject);
-            mailMessage.setText(message);
+            mailMessage.setTo(emailRequest.getTo());
+            mailMessage.setSubject(emailRequest.getSubject());
+            mailMessage.setText(emailRequest.getMessage());
+
+            Notification notification = new Notification(emailRequest.getSubject(), emailRequest.getMessage(), new Date().toString(), emailRequest.getTo());
+            notificationService.saveNotification(notification);
 
             mailSender.send(mailMessage);
             return "Mail Sent Successfully!";
@@ -40,9 +43,10 @@ public class NotificationController {
         }
     }
 
+
     @GetMapping("/client/{id}")
-    public List<Notification> getNotifications(@PathVariable long id) {
-        return notificationService.getNotificationsByClientId(id);
+    public List<Notification> getNotifications(@PathVariable String mail) {
+        return notificationService.getNotificationsByClientEmail(mail);
     }
 
 

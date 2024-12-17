@@ -18,13 +18,12 @@ public class NotificationService {
         this.notificationRepository = notificationRepository;
     }
 
-    public boolean sendNotification(Notification notification) {
+    public boolean saveNotification(Notification notification) {
         notificationRepository.save(notification);
-
         return true;
     }
 
-    public List<Notification> getNotificationsByClientId(long clientId) {
-        return notificationRepository.findByClientId(clientId);
+    public List<Notification> getNotificationsByClientEmail(String clientEmail) {
+        return notificationRepository.findByClientEmail(clientEmail);
     }
 }
