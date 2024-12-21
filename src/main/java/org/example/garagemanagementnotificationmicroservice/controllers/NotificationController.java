@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/notification")
+@CrossOrigin(origins = "*")
 public class NotificationController {
 
     @Autowired
@@ -24,6 +25,11 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
+    @GetMapping("/")
+    public List<Notification> getNotifications() {
+        return notificationService.getAllNotifications();
+    }
+
     @PostMapping("/sendMail")
     public String sendMail(@RequestBody EmailRequest emailRequest) {
         try {
@@ -32,8 +38,10 @@ public class NotificationController {
             mailMessage.setSubject(emailRequest.getSubject());
             mailMessage.setText(emailRequest.getMessage());
 
+            System.out.println(mailMessage);
+
             Notification notification = new Notification(emailRequest.getSubject(), emailRequest.getMessage(), new Date().toString(), emailRequest.getTo());
-            notificationService.saveNotification(notification);
+            //notificationService.saveNotification(notification);
 
             mailSender.send(mailMessage);
             return "Mail Sent Successfully!";

@@ -18,6 +18,10 @@ public class NotificationService {
         this.notificationRepository = notificationRepository;
     }
 
+    public List<Notification> getAllNotifications() {
+        return notificationRepository.findAll();
+    }
+
     public boolean saveNotification(Notification notification) {
         notificationRepository.save(notification);
         return true;
