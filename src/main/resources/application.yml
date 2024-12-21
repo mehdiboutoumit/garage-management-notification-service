@@ -1,0 +1,39 @@
+spring:
+  profiles:
+    active: ${PROFILE:dev}
+  application:
+    name: notification-service
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL:bouihassan494@gmail.com}
+    password: ${APP_PASSWORD:hxho vsil ikth cptq}
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+
+server:
+  port: 8085
+
+# Uncomment below for RabbitMQ configuration if needed
+# spring:
+#   rabbitmq:
+#     host: localhost
+#     port: 5672
+#     username: guest
+#     password: guest
