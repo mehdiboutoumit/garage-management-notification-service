@@ -10,8 +10,6 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
-
-
   mail:
     host: smtp.gmail.com
     port: 587
@@ -27,13 +25,12 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
 
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
 server:
   port: 8085
 
-# Uncomment below for RabbitMQ configuration if needed
-# spring:
-#   rabbitmq:
-#     host: localhost
-#     port: 5672
-#     username: guest
-#     password: guest
